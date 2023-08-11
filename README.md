@@ -26,6 +26,11 @@ https://www.pinecone.io/
 5. 其他設定可以用預設就好
 6. 創建完後去API keys得到keys跟Environment
 
+### 到static\scrip.js中第23、24行加入Knowledge Graph Search API
+```javascript=
+KGSearchWidget(key="Knowledge Graph Search API", document.getElementById("user_input_event"), config);
+KGSearchWidget(key="Knowledge Graph Search API", document.getElementById("user_input_company"), config);
+```
 ### 填入openapi key 跟 serpapi key和pinecone的api keys跟Environment跟indexname
 - 在config.py中以下填入你自己的openapi key和serpapi key
 ```python=
