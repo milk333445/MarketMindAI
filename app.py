@@ -66,39 +66,49 @@ def process():
     print(user_input_hint)
     #processed_result = user_input + ' processed'
     #歷史事件
-    while True:
-        related_history_events = get_related_history_events(user_input)
-        if related_history_events is not None and any(related_history_events.values()):
-            print("取得歷史事件資料成功！")
-            break
-        else:
-            print("取得歷史事件資料失敗！ 正在重新取得...")
-    
-    try:
-        event = event_time_inquiry(user_input)
-    except Exception as e:
-        print(f"可能該事件無確切時間")
-        event = [user_input, "無確切時間"]
+    if user_input.strip() != '':
+        while True:
+            related_history_events = get_related_history_events(user_input)
+            if related_history_events is not None and any(related_history_events.values()):
+                print("取得歷史事件資料成功！")
+                break
+            else:
+                print("取得歷史事件資料失敗！ 正在重新取得...")
         
-    #因果分析
-    processed_result , result, wiki_search_summary, cause_and_effect_input = CauseAnalysisWebAPI(user_input, related_history_events, event)
-    #切字
-    try:
-        background, cause, effect = cut_result(processed_result)
-    except Exception as e:
-        print(f"Error cutting result: {e}")
-        background, cause, effect = None, None, None
-    #觀點分析
-    if user_input_hint.strip() != '':
-        point_of_view_analysis_result = point_of_view_analysis(result, processed_result, event, user_input_hint)
+        try:
+            event = event_time_inquiry(user_input)
+        except Exception as e:
+            print(f"可能該事件無確切時間")
+            event = [user_input, "無確切時間"]
+            
+        #因果分析
+        processed_result , result, wiki_search_summary, cause_and_effect_input = CauseAnalysisWebAPI(user_input, related_history_events, event)
+        #切字
+        try:
+            background, cause, effect = cut_result(processed_result)
+        except Exception as e:
+            print(f"Error cutting result: {e}")
+            background, cause, effect = None, None, None
+        #觀點分析
+        if user_input_hint.strip() != '':
+            point_of_view_analysis_result = point_of_view_analysis(result, processed_result, event, user_input_hint)
+        else:
+            point_of_view_analysis_result = None
+        #因果流程圖
+        try:
+            draw_diagram(f'事件名稱:{event[0]}\n {processed_result}')
+        except Exception as e:
+            print(f"Error drawing diagram: {e}")
+            draw_diagram(f'事件名稱:{event[0]}\n {processed_result}')
     else:
+        processed_result = None
+        background, cause, effect = None, None, None
         point_of_view_analysis_result = None
-    #因果流程圖
-    try:
-        draw_diagram(f'事件名稱:{event[0]}\n {processed_result}')
-    except Exception as e:
-        print(f"Error drawing diagram: {e}")
-        draw_diagram(f'事件名稱:{event[0]}\n {processed_result}')
+        result = None
+        wiki_search_summary = None
+        cause_and_effect_input = None
+        event = None
+        related_history_events = None
     #投資建議
     if user_input_company_name.strip() != '':
         my_agent = get_my_agent(processed_result, event, user_input_company_name)
@@ -119,6 +129,7 @@ def process():
         file_path_reference_data = os.path.join(os.getcwd(),'reference.txt')
         reference_data = read_txt_file(file_path_reference_data)
         reference_data = json.loads(reference_data)
+        reference_data = json.dumps(reference_data)
         with open (file_path_reference_data, 'w', encoding='utf-8') as file:
             file.write('')
     else:
@@ -127,8 +138,7 @@ def process():
         
     #處理參考資料
         
-        
-    reference_data = json.dumps(reference_data)
+
     related_history_events = json.dumps(related_history_events)
     return jsonify({'result': processed_result, 
                     'background': background,

@@ -436,4 +436,12 @@ p:not([class]){
     color: #1a202c;
   }
   
-  
+  #user_input_event{
+    width: 70%;
+  }
+  #user_input_company{
+    width: 62%;
+  }
+  #user_input_hint{
+    width: 73%;
+  }

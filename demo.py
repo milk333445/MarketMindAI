@@ -449,11 +449,11 @@ def CauseAnalysisWebAPI(input_query: str, history_events: dict, event):
     split_doce = text_splitter.split_documents(documents)
     split_doce = remove_unnessary_word(split_doce)
     
-    PINECONE_API_KEY = 'd9a744de-7683-478a-b1da-6defd560093d'
-    PINECONE_API_ENV = 'us-west4-gcp'
+    PINECONE_API_KEY = pinecone_api
+    PINECONE_API_ENV = pinecone_env
     embeddings = OpenAIEmbeddings()
     pinecone.init(api_key=PINECONE_API_KEY, environment=PINECONE_API_ENV)
-    index_name = 'casual'
+    index_name = pinecone_index_name
     docsearch = Pinecone.from_texts([t.page_content for t in split_doce], embeddings, index_name=index_name)
     
     query =  f"{input_query}"

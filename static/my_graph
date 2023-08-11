@@ -1,0 +1,22 @@
+// Cause Analysis
+digraph {
+	0 [label="富邦金控併購日盛事件" color="#17AAA5" fillcolor="#020e0e" fontcolor=white fontname=Heiti fontsize=24 shape=box style=filled]
+	1 [label="原因1 : 擴大市場份額" color="#17AAA5" fillcolor="#17AAA5" fontcolor=white fontname=Heiti fontsize=16 shape=box style=filled]
+	2 [label="原因2 : 提高競爭力" color="#17AAA5" fillcolor="#17AAA5" fontcolor=white fontname=Heiti fontsize=16 shape=box style=filled]
+	3 [label="原因3 : 實現經濟規模效益" color="#17AAA5" fillcolor="#17AAA5" fontcolor=white fontname=Heiti fontsize=16 shape=box style=filled]
+	B [label="富邦金控併購日盛金控" color="#A7A7A7" fillcolor="#A7A7A7" fontcolor=white fontname=Heiti fontsize=16 shape=box style=filled]
+	C [label="富邦金控併購日盛金控" color="#A7A7A7" fillcolor="#A7A7A7" fontcolor=white fontname=Heiti fontsize=16 shape=box style=filled]
+	D [label="富邦金控併購日盛金控" color="#A7A7A7" fillcolor="#A7A7A7" fontcolor=white fontname=Heiti fontsize=16 shape=box style=filled]
+	E [label="未來影響1 : 金融業結構調整" color="#0095B8" fillcolor="#0095B8" fontcolor=black fontname=Heiti fontsize=16 shape=box style=filled]
+	F [label="未來影響2 : 金融市場穩定性" color="#0095B8" fillcolor="#0095B8" fontcolor=black fontname=Heiti fontsize=16 shape=box style=filled]
+	G [label="未來影響3 : 經濟發展和就業機會" color="#0095B8" fillcolor="#0095B8" fontcolor=black fontname=Heiti fontsize=16 shape=box style=filled]
+	1 -> B [label="  富邦金控可以獲得日盛金控的客戶和業務，進一步擴大其在金融業的影響力和市場份額  " color=black fontname=Heiti fontsize=15 penwidth=2]
+	2 -> C [label="  富邦金控可以獲得日盛金控的資源和專業知識，提高自身的綜合實力和競爭力  " color=black fontname=Heiti fontsize=15 penwidth=2]
+	3 -> D [label="  富邦金控可以整合兩家公司的資源和業務，實現成本節約和效率提升  " color=black fontname=Heiti fontsize=15 penwidth=2]
+	B -> 0 [color=black penwidth=2]
+	C -> 0 [color=black penwidth=2]
+	D -> 0 [color=black penwidth=2]
+	0 -> E [label="  可能引發其他金融機構之間的併購和整合  " color=black fontname=Heiti fontsize=14 penwidth=2]
+	0 -> F [label="  可能引發市場不確定性和投資者的擔憂，導致市場波動和風險增加  " color=black fontname=Heiti fontsize=14 penwidth=2]
+	0 -> G [label="  可能帶來新的商機和投資，促進經濟增長和就業機會的增加  " color=black fontname=Heiti fontsize=14 penwidth=2]
+}

@@ -1,27 +1,13 @@
-/*
-var config = {
-    'limit': 10,
-    'languages': ['zh', 'en'], 
-    'maxDescChars': 100,
-  };
 
-  KGSearchWidget(key="AIzaSyC-do9AgWGWbNl2OrEfpsiYu8PSNjJxkY0", document.getElementById("user_input_event"), config);
-  KGSearchWidget(key="AIzaSyC-do9AgWGWbNl2OrEfpsiYu8PSNjJxkY0", document.getElementById("user_input_company"), config);
-  */
 //新增部分
 var config = {
     'limit': 10,
     'languages': ['zh', 'en'], /*https://en.wikipedia.org/wiki/List_of_ISO_639-1_codes*/
     'maxDescChars': 100,
   };
-  /*config['selectHandler'] = function(e) {
-    alert(e.row.name + ' selected');
-  };
-  config['highlightHandler'] = function(e) {
-    alert(e.row.name + ' highlighted');
-  };*/
-  KGSearchWidget(key="AIzaSyC-do9AgWGWbNl2OrEfpsiYu8PSNjJxkY0", document.getElementById("user_input_event"), config);
-  KGSearchWidget(key="AIzaSyC-do9AgWGWbNl2OrEfpsiYu8PSNjJxkY0", document.getElementById("user_input_company"), config);
+  
+  KGSearchWidget(key="", document.getElementById("user_input_event"), config);
+  KGSearchWidget(key="", document.getElementById("user_input_company"), config);
 
 var modal = document.getElementById('modal');
 var bgImg = document.getElementById('bgImg');
@@ -54,6 +40,9 @@ $(document).ready(function() {
         var userInput = $('#user_input_event').val();
         var company_name = $('#user_input_company').val();
         var user_input_hint = $('#user_input_hint').val();
+
+        
+        
         console.log('User Input:', userInput);
         console.log('Company Name:', company_name);
         console.log('User Input Hint:', user_input_hint);
@@ -320,23 +309,41 @@ $(document).ready(function() {
                     }
 
                 }
+                else
+                {
+                    $('#graph_event_effect').html('');
+                    $('#graph_RSI').html('');
+                    $('#graph_bands').html('');
+                    $('#graph_MACD').html('');
+                    $('#graph_value').html('');
+                    $('#graph_gprofitclose').html('');
+                    $('#graph_keyfinancial').html('');
+                    $('#graph_ratio').html('');
+                }
 
                 //處理reference
                 var reference = response.reference_data;
-                var referenceObj = JSON.parse(reference);
-                var referenceDiv = document.getElementById('reference');
-                for (var i=0; i < referenceObj['title'].length; i++)
+                if (reference !== null)
                 {
-                    var title = referenceObj['title'][i];
-                    var link = referenceObj['link'][i];
+                    var referenceObj = JSON.parse(reference);
+                    var referenceDiv = document.getElementById('reference');
+                    for (var i=0; i < referenceObj['title'].length; i++)
+                    {
+                        var title = referenceObj['title'][i];
+                        var link = referenceObj['link'][i];
 
-                    var paragraph = document.createElement('p');
-                    var anchor = document.createElement('a');
+                        var paragraph = document.createElement('p');
+                        var anchor = document.createElement('a');
 
-                    anchor.href = link;
-                    anchor.textContent = title;
-                    paragraph.appendChild(anchor);
-                    referenceDiv.appendChild(paragraph);
+                        anchor.href = link;
+                        anchor.textContent = title;
+                        paragraph.appendChild(anchor);
+                        referenceDiv.appendChild(paragraph);
+                    }
+                }
+                else
+                {
+                    $('#reference').html('');
                 }
                 setLoading(false);
   
