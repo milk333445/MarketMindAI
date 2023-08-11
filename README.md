@@ -29,7 +29,7 @@ pip install -r requirements.txt
 ```
 ### 安裝畫圖套件
 ```python=
-npm install -g @mermaid-js/mermaid-cli`
+npm install -g @mermaid-js/mermaid-cli
 ```
 
 ### 打開終端機
