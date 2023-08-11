@@ -10,8 +10,18 @@
 - images資料夾
 - static資料夾
 - templates資料夾
+### 向量資料庫申請
+- 前往以下連結(右上申請)
+https://www.pinecone.io/
+- 註冊帳號並且註冊api
+1. 註冊完之後可以到index(在pinecone官網等入後會看到)這個地方創建向量資料庫
+2. 點擊右上角create index
+3. 設定向量資料庫的name(後面輸入到config.py中)
+4. 點開後設定維度為1536
+5. 其他設定可以用預設就好
+6. 創建完後去API keys得到keys跟Environment
 
-### 填入openapi key 跟 serpapi key和pinecone的api跟env跟indexname
+### 填入openapi key 跟 serpapi key和pinecone的api keys跟Environment跟indexname
 - 在config.py中以下填入你自己的openapi key和serpapi key
 ```python=
 OPEN_API_KEY = ""
