@@ -10,6 +10,11 @@
 - images資料夾
 - static資料夾
 - templates資料夾
+
+## 事前準備
+### 申請自己的serp API key
+- 進入 https://serpapi.com/plan 註冊帳號
+- 登入後在 Your account即可看到 Your Private API Key
 ### 向量資料庫申請
 - 前往以下連結(右上申請)
 https://www.pinecone.io/
