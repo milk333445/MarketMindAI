@@ -1,0 +1,544 @@
+<!--
+<!DOCTYPE html>
+    <html>
+    <head>
+        <meta charset="utf-8">
+        <meta name="demo" content="width=device-width, initial-scale=1.0" />
+        <title>因果分析demo</title>
+        <link href="https://fonts.googleapis.com/css?family=Poppins:400,800" rel="stylesheet" />
+        <link href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.0/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
+        <link rel="stylesheet" href="../static/styles.css">
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+        <script src="https://kit.fontawesome.com/4227e4c400.js" crossorigin="anonymous"></script>
+
+        <style>
+        @import url(//fonts.googleapis.com/earlyaccess/notosanstc.css);
+        * {
+            font-family: 'Noto Sans TC',sans-serif;
+            margin: 2;
+            padding: 0
+        }
+
+        /*https://www.w3schools.com/css/css_navbar_vertical.asp*/
+        
+        ul {
+            list-style-type: none;
+            margin: 0;
+            padding: 0;
+            width: 25%;
+            background-color: #f4f4f4;
+            /*position: fixed;*/
+            height: 100%;
+            overflow: auto;
+          }
+          
+          li a {
+            display: block;
+            color: #000;
+            padding: 8px 16px;
+            text-decoration: none;
+          }
+
+          li a.active {
+            background-color: #008fc7;
+            color: white;
+          }
+
+          li a:hover:not(.active) {
+            background-color: #d0e7f7;
+            color: white;
+            
+          }
+          object[type="image/svg+xml"] {
+              max-width: 100%;
+          }
+
+        </style>
+        <link type="text/css" rel="stylesheet" href="https://www.gstatic.com/knowledge/kgsearch/widget/1.0/widget.min.css">
+        
+        <script type="text/javascript" src="https://www.gstatic.com/knowledge/kgsearch/widget/1.0/widget.min.js"></script>
+    </head>
+    <body>
+      <div id="head" >
+      <div>
+        <div id="fb" >
+          <a id="github-link" href="https://github.com/milk333445?tab=repositories"style=" font-size: 15px;position:relative; top: 15px; left:90%;text-decoration:none; " >Github</a>
+          <div class="box" style="position:absolute;">
+            <form id="input-form">
+              <fieldset>
+                <legend style="margin: 0;padding: 0;display: block; -webkit-padding-start:0; -webkit-padding-end:0; margin-bottom: 17px;border-bottom:none;">WHAT ARE YOU LOOKING FOR</legend>
+              <div class="inner-form">
+                <div class="input-field">
+                  <input class="form-control" type="text" id="user_input_event" placeholder="Enter an Event" style="margin-right: 5px;">
+                  <script type="text/javascript">
+                    KGSearchWidget(key="AIzaSyC-do9AgWGWbNl2OrEfpsiYu8PSNjJxkY0", document.getElementById("user_input_event"), {});
+                  </script>
+                  <div class="vl" style="border-left: 1px solid #7c7c7c;min-height: 50px;"></div>
+                  <input class="form-control" type="text" id="user_input_company" placeholder="Company name" style="width: 200px; margin-left: 5px;margin-right: 5px;">
+                  <script type="text/javascript">
+                    KGSearchWidget(key="AIzaSyC-do9AgWGWbNl2OrEfpsiYu8PSNjJxkY0", document.getElementById("user_input_company"), {});
+                  </script>
+                  <div class="vl" style="border-left: 1px solid #7c7c7c;min-height: 50px;"></div>
+                  <input type="text" class="form-control" id="user_input_hint" placeholder="Point of view" style="margin-left: 5px; width: 200px;">
+                  <button class="btn-search" type="submit" onclick="document.getElementById('Wrapper').scrollIntoView();">
+                <svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" viewBox="0 0 24 24">
+                  <path d="M15.5 14h-.79l-.28-.27C15.41 12.59 16 11.11 16 9.5 16 5.91 13.09 3 9.5 3S3 5.91 3 9.5 5.91 16 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14z"></path>
+                </svg>
+              </button> 
+                </div>
+              </div>
+                <div class="suggestion-wrap" style="color: white; justify-content: between;">
+                  <span>台積電投資</span>
+                  <span>日圓走勢</span>
+                  <span>AI股接盤</span>
+                  <span>AI風險</span>
+
+                </div>
+                
+               </fieldset>
+              </form>
+          </div>
+
+        </div>
+      </div>
+      </div>
+
+
+
+     <div id="Wrapper">
+      <div id="tab" style="float:left; width: 18%;">
+        <nav style="text-align: center; list-style-type: none;">
+                
+          <li><a id=li_casual class="active" href="javascript:go_casual(); ">
+            <i class="fa-solid fa-diagram-project fa-lg" style="color: #000000;margin-right: 8px;"></i>因果分析</a></li>
+          <li><a id=li_history href="javascript:go_history();">
+            <i class="fa-solid fa-calendar-days fa-lg" style="color: #000000;margin-right: 8px;"></i>歷史事件</a></li>
+          <li><a id=li_financedata href="javascript:go_financedata();">
+            <i class="fa-solid fa-arrow-trend-up fa-lg" style="color: #000000; margin-right: 8px;"></i></i>財務數據</a></li>
+          <li><a id=li_investadvice href="javascript:go_investadvice();">
+          <i class="fa-solid fa-magnifying-glass-chart fa-lg" style="color: #000000;margin-right: 8px;"></i>投資建議</a></li>
+       
+      </nav>
+      </div>
+
+      
+
+      
+
+
+      <div class="container" style="float:left;  width:72%;">
+              <span id="casual"></span>
+              <span id="history"></span>
+              <span id="financedata"></span>
+              <span id="invest_advice"></span>
+
+              <div id="loading" >
+                <img id="loading-image" src="static/loading.gif" alt="Loading" >
+                
+              </div>
+
+              <div id="div_casual"  class="casual_content" style="margin-left:10%;padding:1px 16px;min-height:800px; display: none;text-align: left;overflow: hidden;">
+                <h2 class="left-align">回答:</h2>
+                  <div id="result"></div>
+                    <h2 class="left-align">因果關聯圖:</h2>
+                  <div id="graph">
+                    
+                  </div>
+                  <h2 class="left-align">觀點分析:</h2>
+                  <div id="viewer_point"></div>
+                  
+            </div>
+            
+            <div id="div_history" class="history_content" style="margin-left:10%;padding:1px 16px;min-height:800px; display: none;text-align: left;overflow: hidden;">
+
+              <div id="timeline" class="timeline">
+                
+                </div>
+              </div>
+              
+              
+            
+            
+              <div id="div_financedata" class="financedata_content" style="margin-left:10%;padding:1px 16px;min-height:800px; display: none;">
+                <h2 style="text-align:left;">事件股價影響</h2>
+                <div id="event_effect"></div>
+                <div id="finance_pic">
+            
+
+                </div>
+              </div>
+              <div  id="div_investadvice" class="invest_advice_content" style="margin-left:10%;padding:1px 16px;min-height:800px; display: none;">
+                <div id="invest_result" style="width:100%; text-align: left;">
+                  
+                </div>
+                <div id="reference" style="margin-top:1%; text-align: left;">
+                    <h2 class="left-align">參考連結</h2>
+                    <p><a href="https://www.forbes.com/sites/gordonkelly/2023/07/26/apple-iphone-15-pro-max-design-display-bezels-new-iphone-release/">New iPhone 15 Exclusive Reveals Stunning Apple Design Decision</a></p>
+                    <p><a href="https://www.macworld.com/article/2008072/ios-ipados-macos-watchos-tvos-safari-security-updates.html">It's very important to update your Apple devices this week</a></p>
+                    <p><a href="https://www.macworld.com/article/2008072/ios-ipados-macos-watchos-tvos-safari-security-updates.html">It's very important to update your Apple devices this week</a></p>
+                    <p><a href="https://www.macworld.com/article/2008072/ios-ipados-macos-watchos-tvos-safari-security-updates.html">It's very important to update your Apple devices this week</a></p>
+                    <p><a href="https://www.macworld.com/article/2008072/ios-ipados-macos-watchos-tvos-safari-security-updates.html">It's very important to update your Apple devices this week</a></p>
+                    <p><a href="https://www.macworld.com/article/2008072/ios-ipados-macos-watchos-tvos-safari-security-updates.html">It's very important to update your Apple devices this week</a></p>
+
+                  </div>
+              </div>  
+              
+        </div>
+
+      </div>
+
+
+      
+
+      <div id="bottom" style="clear:both; position: relative; bottom: 0; height: 100px; background-color: #7c7c7c;color: white;">©富邦金融控股股份有限公司</div>
+
+      
+     
+
+      
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+        <script src="{{ url_for('static', filename='script.js') }}"></script>
+        <script type="text/javascript">
+          
+
+          function go_casual(){ 
+            document.getElementById("li_casual").classList.add("active");
+            document.getElementById("li_history").classList.remove("active");
+            document.getElementById("li_financedata").classList.remove("active");
+            document.getElementById("li_investadvice").classList.remove("active");
+            document.getElementById("div_casual").style.display="block";
+            document.getElementById("div_history").style.display="none";
+            document.getElementById("div_financedata").style.display="none";
+            document.getElementById("div_investadvice").style.display="none";
+          }
+          function go_history(){ 
+            document.getElementById("li_casual").classList.remove("active");
+            document.getElementById("li_history").classList.add("active");
+            document.getElementById("li_financedata").classList.remove("active");
+            document.getElementById("li_investadvice").classList.remove("active");
+            document.getElementById("div_casual").style.display="none";
+            document.getElementById("div_history").style.display="block";
+            document.getElementById("div_financedata").style.display="none";
+            document.getElementById("div_investadvice").style.display="none";
+          }
+         
+          function go_financedata(){ 
+            document.getElementById("li_casual").classList.remove("active");
+            document.getElementById("li_history").classList.remove("active");
+            document.getElementById("li_financedata").classList.add("active");
+            document.getElementById("li_investadvice").classList.remove("active");
+            document.getElementById("div_casual").style.display="none";
+            document.getElementById("div_history").style.display="none";
+            document.getElementById("div_financedata").style.display="block";
+            document.getElementById("div_investadvice").style.display="none";
+          }
+
+          function go_investadvice(){ 
+            document.getElementById("li_casual").classList.remove("active");
+            document.getElementById("li_history").classList.remove("active");
+            document.getElementById("li_financedata").classList.remove("active");
+            document.getElementById("li_investadvice").classList.add("active");
+            document.getElementById("div_casual").style.display="none";
+            document.getElementById("div_history").style.display="none";
+            document.getElementById("div_financedata").style.display="none";
+            document.getElementById("div_investadvice").style.display="block";
+          }
+
+          $(window).on('load', function() {
+            $('#loading').hide();
+          });
+        </script>
+
+
+    </body>
+</html>
+-->
+
+
+
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<title>⚡Fubon Insight</title>
+	<link href="https://fonts.googleapis.com/css?family=Poppins:400,800" rel="stylesheet" />
+	<link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+    <link rel="stylesheet" href="../static/styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <script src="https://kit.fontawesome.com/4227e4c400.js" crossorigin="anonymous"></script>
+    <link type="text/css" rel="stylesheet" href="https://www.gstatic.com/knowledge/kgsearch/widget/1.0/widget.min.css">
+        
+    <script type="text/javascript" src="https://www.gstatic.com/knowledge/kgsearch/widget/1.0/widget.min.js"></script>
+</head>
+
+<body>
+<!--彈出視窗-->
+<div style='position:fixed;width:100%;height:100%;background-color:rgb(0,0,0,0.65)' id='modal'>
+    <div class='modal' id='modalw'>
+        <img id='bgImg' />
+    </div>
+</div>
+<div id="loadingContainer" class="hidden" >
+  <div class="loading-content">
+    <div class="loading-icon">
+      <i class="fa-solid fa-wand-magic-sparkles fa-fade fa-xl" style="color: black; justify-content: flex-end"></i>
+    </div>
+    <div class="loading-text">
+      <p style="color: black; font-weight: bold;">因果分析製作中，請稍待10分鐘</p>
+    </div>
+  </div>
+</div>
+
+<div class="w3-sidebar w3-bar-block w3-border-right" style="display:block;" id="mySidebar">
+  <button onclick="w3_close()" class="w3-bar-item w3-large" style="text-align: right;">&times;</button>
+  <h4 style="text-align: center;line-height: 10px;font-weight:bolder;color: white;">FUBON INSIGHT</h4>
+  <h3 style="text-align: center;color: white; font-weight: bolder;">CASUAL ANALYSIS</h3>
+  <form id="input-form">
+  <div class="inner-form" style="margin-top: 50px; margin-left: 5%;">
+   <label for="user_input_event">EVENT </label>
+   <input class="form-control" type="text" id="user_input_event" placeholder="Enter an Event(必填)" style=" width: 225px;">
+   <script type="text/javascript">
+    KGSearchWidget(key="AIzaSyC-do9AgWGWbNl2OrEfpsiYu8PSNjJxkY0", document.getElementById("user_input_event"), {});
+   </script>
+    <i class="fa-solid fa-circle-info tooltip" style="color: #ffffff;">
+      <span class="tooltiptext">請輸入想要知道的具體事件</span>
+    </i>
+   <label for="user_input_company">COMPANY </label>
+   <input class="form-control" type="text" id="user_input_company" placeholder="Enter a Company(選填)" style=" width: 200px;">
+   <script type="text/javascript">
+     KGSearchWidget(key="AIzaSyC-do9AgWGWbNl2OrEfpsiYu8PSNjJxkY0", document.getElementById("user_input_company"), {});
+    </script>
+     <i class="fa-solid fa-circle-info tooltip" style="color: #ffffff;">
+      <span class="tooltiptext">請輸入公司名稱</span>
+    </i>
+    <label for="user_input_hint">HINT </label>
+    <input type="text" class="form-control" id="user_input_hint" placeholder="Point of view(選填)" style=" width:235px">
+    <i class="fa-solid fa-circle-info tooltip" style="color: #ffffff;">
+      <span class="tooltiptext">請輸入事件特定觀點角色 如:軟體業、科技業</span>
+    </i>
+     <button class="btn-search" type="submit" style="margin-left: 8%; margin-top: 15px;">Search
+     <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24">
+                   <path d="M15.5 14h-.79l-.28-.27C15.41 12.59 16 11.11 16 9.5 16 5.91 13.09 3 9.5 3S3 5.91 3 9.5 5.91 16 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14z"></path>
+        </svg>
+    </button> 
+  </div>
+</form
+
+  <hr>
+  <div id="tab" style="margin-top:10%">
+	   <a id=li_casual class="w3-bar-item w3-button" href="javascript:go_casual(); ">
+            <i class="fa-solid fa-diagram-project fa-lg" style="color: #fff;margin-right: 8px;"></i>因果分析</a>
+       <a id=li_history class="w3-bar-item w3-button" href="javascript:go_history();">
+            <i class="fa-solid fa-calendar-days fa-lg" style="color: #fff;margin-right: 8px;"></i>歷史事件</a>
+       <a id=li_financedata class="w3-bar-item w3-button" href="javascript:go_financedata();">
+            <i class="fa-solid fa-arrow-trend-up fa-lg" style="color: #fff; margin-right: 8px;"></i></i>財務數據</a>
+       <a id=li_investadvice class="w3-bar-item w3-button" href="javascript:go_investadvice();">
+          <i class="fa-solid fa-magnifying-glass-chart fa-lg" style="color: #fff;margin-right: 8px;"></i>彙總分析</a>  
+  </div>
+</div>  
+
+<div id="header" style="display: flex;justify-content: space-between ;">
+	<div>
+		<button class="w3-button w3-teal w3-xlarge" style="display:none;" onclick="w3_open()" id="open_btn">></button>
+	</div>
+    <div id="loading"  >
+        <i class="fa-solid fa-wand-magic-sparkles fa-fade fa-xl" style="color: black; justify-content: flex-end"></i>
+    </div>
+</div>
+
+
+<div id="container" class="container" style="float:right;  width:72%;">
+        <span id="casual"></span>
+        <span id="history"></span>
+        <span id="financedata"></span>
+        <span id="invest_advice"></span>
+        <div id="intro" class="active" tyle="margin-left:3%;padding:1px 16px;min-height:800px;text-align: left;overflow: hidden; margin-bottom: 8%;">
+          <img src="static\因果流程圖.png" style="width: 94%; margin-top: 5%; margin-left: 3%; margin-right: 3%;">
+        </div>
+
+        
+
+        <!-- 頁籤的內容區塊 -->
+        <div id="div_casual"  class="casual_content" style="margin-left:3%;padding:1px 16px;min-height:800px; display: none;text-align: left;overflow: hidden; margin-bottom: 8%;">
+        <div id="div_casual_answer">
+        
+        </div>  
+        
+
+          
+
+        <div id="div_casual_answer"> 
+        <div style="width:100%; float:left;">
+          <h4 class="title-heading">觀點分析</h4>
+          <div id="casual_point" class="contain_css">
+              <p>觀點分析內容</p>
+          </div>
+        </div>   
+        </div>  
+        </div>
+        
+            
+                 
+        
+            
+            
+        <div id="div_history" class="history_content" style="margin-left:3%;padding:1px 16px;min-height:800px; display: none;text-align: left;overflow: hidden;">
+
+            <div id="timeline" class="timeline">
+                
+            </div>
+            </div>
+              
+              
+            
+            
+        <div id="div_financedata" class="financedata_content" style="margin-left:3%;padding:1px 16px;min-height:800px; display: none;">
+            <div class="tab_financialdata">
+                <button class="btn-search-fin" type="submit" onclick="document.getElementById('title_event_effect').scrollIntoView();">$</button>
+                <div class="hide">事件股價影響</div>
+                <button class="btn-search-fin" type="submit" onclick="document.getElementById('title_RSI').scrollIntoView();">$</button>
+                <div class="hide">RSI</div>
+                <button class="btn-search-fin" type="submit" onclick="document.getElementById('title_bands').scrollIntoView();">$</button>
+                <div class="hide">布林通道</div>
+                <button class="btn-search-fin" type="submit" onclick="document.getElementById('title_MACD').scrollIntoView();">$</button>
+                <div class="hide">MACD</div>
+                <button class="btn-search-fin" type="submit" onclick="document.getElementById('title_value').scrollIntoView();">$</button>
+                <div class="hide">淨值&市值</div>
+                <button class="btn-search-fin" type="submit" onclick="document.getElementById('title_keyfinancial').scrollIntoView();">$</button>
+                <div class="hide">營收相關資訊</div>
+                <button class="btn-search-fin" type="submit" onclick="document.getElementById('title_incomeclose').scrollIntoView();">$</button>
+                <div class="hide">收入與收盤價</div>
+                <button class="btn-search-fin" type="submit" onclick="document.getElementById('title_gprofitclose').scrollIntoView();">$</button>
+                <div class="hide">毛利與收盤價</div>
+                <button class="btn-search-fin" type="submit" onclick="document.getElementById('title_ratio').scrollIntoView();">$</button>
+                <div class="hide">財務比率</div>   
+            </div>
+
+            <div id="event_detail_stock_analysis" class="contain_css">
+
+            </div>
+            <h4 id="title_event_effect" class="title-heading">事件股價影響</h4>
+                    
+                    <div id="event_effect" class="contain_css" >
+                        <p>事件對股價影響</p>
+                   </div>
+                   <div id="graph_event_effect">
+                        
+                   </div>
+            <h4 id="title_RSI" class="title-heading">RSI</h4>
+                    <div id="graph_RSI">
+                        
+                    </div>
+
+            <h4 id="title_bands" class="title-heading">布林通道</h4>
+                    <div id="graph_bands">
+                        
+                    </div>
+            <h4 id="title_MACD" class="title-heading">MACD</h4>
+                    <div id="graph_MACD">
+                        
+                    </div>
+            <h4 id="title_value" class="title-heading">淨值&市值</h4>
+                    <div id="graph_value">
+                        
+                    </div>
+            <h4 id="title_keyfinancial" class="title-heading">營收相關資訊</h4>
+                    <div id="graph_keyfinancial">
+                        
+                    </div>
+            
+            <h4 id="title_gprofitclose" class="title-heading">毛利與收盤價</h4>
+                    <div id="graph_gprofitclose">
+                        
+                    </div>
+            <h4 id="title_ratio" class="title-heading">財務比率</h4>
+                    <div id="graph_ratio">
+                        
+                    </div>
+
+          
+        </div>
+        
+        <div  id="div_investadvice" class="invest_advice_content" style="margin-left:3%;padding:1px 16px;min-height:800px; display: none;">
+            
+            <div id="invest_result" class="contain_css" style="width:100%; text-align: left;">
+                  
+            </div>
+            <h2 class="left-align">參考連結</h2>
+            <div id="reference" style="margin-top:1%; text-align: left;">
+                
+            </div>
+        </div>  
+              
+    </div>
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<script src="{{ url_for('static', filename='script.js') }}"></script>
+<script type="text/javascript">
+	function w3_open() {
+		document.getElementById("mySidebar").style.display = "block";
+		document.getElementById("container").style.width = "72%";
+		document.getElementById("container").style.float = "right";
+	}
+	function w3_close() {
+		document.getElementById("open_btn").style.display = "block";
+		document.getElementById("mySidebar").style.display = "none";
+		document.getElementById("container").style.width = "100%";
+		document.getElementById("container").style.float = "none";
+	}
+
+	/*$(window).on('load', function() {
+            $('#loading').hide();
+          });*/
+
+	function go_casual(){ 
+            document.getElementById("intro").style.display="none";    
+            document.getElementById("li_casual").classList.add("active");
+            document.getElementById("li_history").classList.remove("active");
+            document.getElementById("li_financedata").classList.remove("active");
+            document.getElementById("li_investadvice").classList.remove("active");
+            document.getElementById("div_casual").style.display="block";
+            document.getElementById("div_history").style.display="none";
+            document.getElementById("div_financedata").style.display="none";
+            document.getElementById("div_investadvice").style.display="none";
+    }
+    function go_history(){ 
+             document.getElementById("intro").style.display="none";
+            document.getElementById("li_casual").classList.remove("active");
+            document.getElementById("li_history").classList.add("active");
+            document.getElementById("li_financedata").classList.remove("active");
+            document.getElementById("li_investadvice").classList.remove("active");
+            document.getElementById("div_casual").style.display="none";
+            document.getElementById("div_history").style.display="block";
+            document.getElementById("div_financedata").style.display="none";
+            document.getElementById("div_investadvice").style.display="none";
+    }
+         
+    function go_financedata(){ 
+            document.getElementById("intro").style.display="none";
+            document.getElementById("li_casual").classList.remove("active");
+            document.getElementById("li_history").classList.remove("active");
+            document.getElementById("li_financedata").classList.add("active");
+            document.getElementById("li_investadvice").classList.remove("active");
+            document.getElementById("div_casual").style.display="none";
+            document.getElementById("div_history").style.display="none";
+            document.getElementById("div_financedata").style.display="block";
+            document.getElementById("div_investadvice").style.display="none";
+    }
+
+    function go_investadvice(){ 
+            document.getElementById("intro").style.display="none";
+            document.getElementById("li_casual").classList.remove("active");
+            document.getElementById("li_history").classList.remove("active");
+            document.getElementById("li_financedata").classList.remove("active");
+            document.getElementById("li_investadvice").classList.add("active");
+            document.getElementById("div_casual").style.display="none";
+            document.getElementById("div_history").style.display="none";
+            document.getElementById("div_financedata").style.display="none";
+            document.getElementById("div_investadvice").style.display="block";
+    }
+
+</script>	
+</body>
+</html>

@@ -1,0 +1,439 @@
+body{
+  margin: 0;
+  padding: 0;
+}
+
+html {
+  overflow: scroll;
+  overflow-x: hidden;
+}
+::-webkit-scrollbar {
+  width: 0;  /* Remove scrollbar space */
+  background: transparent;  /* Optional: just make scrollbar invisible */
+}
+/* Optional: show position indicator in red */
+::-webkit-scrollbar-thumb {
+  background: #FF0000;
+}
+
+.w3-sidebar {
+  height: 100%;
+  width: 27%;
+  background-color: #262730;
+  position: fixed!important;
+  z-index: 1;
+  overflow: auto;
+  color: #fff;
+  overflow-x: hidden;
+}
+.w3-bar-block .w3-bar-item {
+  background-color: #262730 ;
+  color: #fff;
+}
+
+.w3-button.active {
+  background-color: #cccccc;
+  color: black;
+}
+
+.w3-button:hover {
+  background-color:#E0E0E0!important;
+  color: black;
+}
+
+input{
+  background-color: #3a3b46;
+  border-radius: 5px;
+  outline: none;
+  box-shadow: none;
+  border: none;
+  color: #fff;
+
+}
+
+
+
+label{
+  font-size: 15px;
+}
+
+.btn-search{
+  width:80%;
+  text-align: center;
+  line-height:20px;
+
+}
+
+hr{
+  border: 0.6px solid #7c7c7c;
+}
+
+.w3-teal, .w3-hover-teal:hover {
+  background-color: #262730!important;
+  font-size: 10px!important;
+}
+
+.form-control{
+  margin-bottom: 10px;
+}
+
+#header{
+  background-color: #f5f2f1;
+}
+
+#container{
+  background-color: #f5f2f1;
+  
+}
+
+.contain_css {
+text-align: left;
+margin-top: 20px;
+padding: 5px; 
+background-color: #fff;
+/*border: 1px solid #ccc;*/
+border-radius: 3px;
+
+}
+
+#event_detail, #casual_result, #casual_point, #event_effect, #invest_result, #reference {
+font-size: 18px;
+
+}
+
+h5,h4{
+  font-weight: bolder;
+  color: #434343;
+}
+
+p{
+  font-size: 16px;
+}
+
+.title-heading {
+  border-bottom: 1px solid #dfdfdf;
+  text-align: left;
+  margin: 18px 0 21px;
+}
+
+.btn-search-fin{
+  display: inline-block;
+  text-align: center;
+  border: 2px solid black;
+  background-color: white;
+  color: black;
+  font-weight: bolder;
+  border-radius: 100px;
+
+}
+
+.btn-search-fin:hover{
+  background-color: #d49000;
+  color: #ffc843;
+  font-weight: bolder;
+  border-radius: 50%;
+  border: 2px solid #ffc843;
+
+}
+
+.hide{
+  display: none;
+}
+
+.btn-search-fin:hover + .hide{
+  display: inline-block;
+  color: #ffc843;
+  font-size: 15px;
+  font-weight: bold;
+}
+
+#modal {
+  display: none;
+}
+.modal {
+  margin: auto;
+  padding-top: 5%;
+  width: 100%;
+  height: auto;
+  z-index: 1;
+}
+
+.modal img {
+  animation-name: zoom;
+  animation-duration: 0.6s;
+  display: block;
+  padding: 10px;
+  margin: auto;
+  min-width: 60%;
+  min-height: auto;
+  box-shadow: 0 2px 6px rgb(0, 0, 0, 0.2), 0 10px 20px rgb(0, 0, 0, 0.2);
+  border-radius: 12px;
+  border: 1px solid white;
+  overflow: scroll;
+}
+
+@keyframes zoom {
+  from {transform: scale(0.1)}
+  to {transform: scale(0.6)}
+}
+
+.thum-img {
+  float: left;
+  margin: auto;
+  display: block;
+  
+}
+
+.tooltip {
+  position: relative;
+  display: inline-block;
+  border-bottom: 1px dotted black;
+}
+
+.tooltip .tooltiptext {
+  visibility: hidden;
+  width: 80px;
+  background-color: black;
+  color: #fff;
+  text-align: center;
+  border-radius: 6px;
+  padding: 5px 0;
+  position: absolute;
+  z-index: 1;
+  bottom: 150%;
+  left: 50%;
+  margin-left: -60px;
+  font-size: 5px;
+}
+
+.tooltip .tooltiptext::after {
+  content: "";
+  position: absolute;
+  top: 100%;
+  left: 74%;
+  margin-left: -5px;
+  border-width: 5px;
+  border-style: solid;
+  border-color: black transparent transparent transparent;
+}
+
+.tooltip:hover .tooltiptext {
+  visibility: visible;
+}
+
+
+/*timeline*/
+/*
+time component
+*/
+p:not([class]){
+  line-height: var(--cssTypographyLineHeight, 1.78);
+  margin-top: var(--cssTypographyBasicMargin, 1em);
+  margin-bottom: 0;
+  }
+  
+  p:not([class]):first-child{
+  margin-top: 0;
+  }
+  /*
+  core styles
+  */
+  
+  .time{
+  display: var(--timeDisplay, inline-flex);
+  }
+  
+  /*
+  extensions
+  */
+  
+  
+  /*
+  skin
+  */
+  
+  .time{
+  padding: var(--timePadding, .25rem 1.25rem .25rem);
+  background-color: var(--timeBackgroundColor, #f0f0f0);
+  
+  font-size: var(--timeFontSize, .75rem);
+  font-weight: var(--timeFontWeight, 700);
+  text-transform: var(--timeTextTransform, uppercase);
+  color: var(--timeColor, currentColor);
+  }
+  /*
+  card component
+  */
+  
+  /*
+  core styles
+  */
+  
+  .card{
+  padding: var(--timelineCardPadding, 1.5rem 1.5rem 1.25rem);
+  }
+  
+  .card_content{
+  margin-top: var(--cardContentMarginTop, .5rem);
+  }
+  
+  /*
+  skin
+  */
+  
+  .card{
+  border-radius: var(--timelineCardBorderRadius, 2px);
+  border-left: var(--timelineCardBorderLeftWidth, 3px) solid var(--timelineCardBorderLeftColor, var(--uiTimelineMainColor));
+  box-shadow: var(--timelineCardBoxShadow, 0 1px 3px 0 rgba(0, 0, 0, .12), 0 1px 2px 0 rgba(0, 0, 0, .24));
+  background-color: var(--timelineCardBackgroundColor, #fff);
+  }
+  
+  /*
+  extensions
+  */
+  
+  .card_title{
+  --rTitleMarginTop: var(--cardTitleMarginTop, 1rem);
+  font-size: var(--cardTitleFontSize, 1.25rem);
+  }
+  
+  /*
+  =====
+  CORE STYLES
+  =====
+  */
+  .r-title{
+  margin-top: var(--rTitleMarginTop, 0) !important;
+  margin-bottom: var(--rTitleMarginBottom, 0) !important;
+  }
+  
+  .timeline{
+  display: var(--timelineDisplay, grid);
+  grid-row-gap: var(--timelineGroupsGap, 2rem); /*同年份之間的timecard行距*/
+  }
+  
+  /*
+  1. If timeline__year isn't displaed the gap between it and timeline__cards isn't displayed too
+  */
+  
+  .timeline_year{
+  margin-bottom: 1.25rem; /* 1 */
+  }
+  
+  .timeline_cards{
+  display: var(--timelineCardsDisplay, grid);
+  grid-row-gap: var(--timeloneCardsGap, 1.5rem);
+  grid-column-gap: var(--timeloneCardsGap, 1.5rem);
+  }
+  /*
+  =====
+  SKIN
+  =====
+  */
+  
+  .timeline{
+  --uiTimelineMainColor: var(--timelineMainColor, #222);
+  --uiTimelineSecondaryColor: var(--timelineSecondaryColor, #fff);
+  
+  border-left: var(--timelineLineWidth, 3px) solid var(--timelineLineBackgroundColor, var(--uiTimelineMainColor));
+  padding-top: 1rem;
+  padding-bottom: 1.5rem;
+  }
+  
+  .timeline_year{
+  --timePadding: var(--timelineYearPadding, .5rem 1.5rem);
+  --timeColor: var(--uiTimelineSecondaryColor);
+  --timeBackgroundColor: #008fc7;
+  --timeFontWeight: var(--timelineYearFontWeight, 400);
+  }
+  
+  .timeline_card{
+  position: relative;
+  margin-left: var(--timelineCardLineGap, 1rem);
+  }
+  
+  /*
+  1. Stoping cut box shadow
+  */
+  
+  .timeline_cards{
+  overflow: hidden;
+  padding-top: .25rem; /* 1 */
+  padding-bottom: .25rem; /* 1 */
+  }
+  
+  .timeline_card::before{
+  content: "";
+  width: 100%;
+  height: var(--timelineCardLineWidth, 2px);
+  background-color: var(--timelineCardLineBackgroundColor, var(--uiTimelineMainColor));
+  
+  position: absolute;
+  top: var(--timelineCardLineTop, 1rem);
+  left: -50%;
+  z-index: -1;
+  }
+  /*
+  =====
+  SETTINGS
+  =====
+  */
+  /**/
+  .timeline{
+  --timelineMainColor: #008fc7;
+  }
+  .page{
+  max-width: 47rem;
+  padding: 5rem 2rem 3rem;
+  margin-left: auto;
+  margin-right: auto;
+  }
+  
+  
+  .substack{
+  border:1px solid #EEE; 
+  background-color: #fff;
+  width: 100%;
+  max-width: 480px;
+  height: 280px;
+  margin: 1rem auto;;
+  }
+
+  /*loading頁面*/
+  #loadingContainer.hidden {
+    display: none;
+  }
+  #loadingContainer {
+    position: fixed;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: rgba(0, 0, 0, 0.8);
+    z-index: 999;
+  }
+  
+  .loading-content {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: white;
+    padding: 1em;
+    border-radius: 1em;
+    width: 16em;
+    border: 1px solid rgb(255, 255, 255);
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  }
+  
+  .loading-icon {
+    margin-right: 1em;
+  }
+  
+  .loading-text {
+    color: #1a202c;
+  }
+  
+  
