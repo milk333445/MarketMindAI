@@ -1,13 +1,4 @@
-/*
-var config = {
-    'limit': 10,
-    'languages': ['zh', 'en'], 
-    'maxDescChars': 100,
-  };
 
-  KGSearchWidget(key="AIzaSyC-do9AgWGWbNl2OrEfpsiYu8PSNjJxkY0", document.getElementById("user_input_event"), config);
-  KGSearchWidget(key="AIzaSyC-do9AgWGWbNl2OrEfpsiYu8PSNjJxkY0", document.getElementById("user_input_company"), config);
-  */
 //新增部分
 var config = {
     'limit': 10,
@@ -20,8 +11,8 @@ var config = {
   config['highlightHandler'] = function(e) {
     alert(e.row.name + ' highlighted');
   };*/
-  KGSearchWidget(key="AIzaSyC-do9AgWGWbNl2OrEfpsiYu8PSNjJxkY0", document.getElementById("user_input_event"), config);
-  KGSearchWidget(key="AIzaSyC-do9AgWGWbNl2OrEfpsiYu8PSNjJxkY0", document.getElementById("user_input_company"), config);
+  KGSearchWidget(key="", document.getElementById("user_input_event"), config);
+  KGSearchWidget(key="", document.getElementById("user_input_company"), config);
 
 var modal = document.getElementById('modal');
 var bgImg = document.getElementById('bgImg');
