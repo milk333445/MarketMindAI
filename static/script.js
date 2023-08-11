@@ -5,7 +5,16 @@ var config = {
     'languages': ['zh', 'en'], /*https://en.wikipedia.org/wiki/List_of_ISO_639-1_codes*/
     'maxDescChars': 100,
   };
+<<<<<<< HEAD
   
+=======
+  /*config['selectHandler'] = function(e) {
+    alert(e.row.name + ' selected');
+  };
+  config['highlightHandler'] = function(e) {
+    alert(e.row.name + ' highlighted');
+  };*/
+>>>>>>> c1a6aef1fc6796e4c099e19e05e6b26e3ac15db1
   KGSearchWidget(key="", document.getElementById("user_input_event"), config);
   KGSearchWidget(key="", document.getElementById("user_input_company"), config);
 
