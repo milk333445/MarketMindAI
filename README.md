@@ -45,10 +45,7 @@ python app.py
 ```
 
 ### 開啟網站
-- 上一步驟執行完後應該會在終端機看到以下畫面
-![](https://hackmd.io/_uploads/HyMWuZ73h.png)
 - 複製該連結貼至瀏覽器中開啟網站
-![](https://hackmd.io/_uploads/S1nUd-7n2.png)
 
 ### 即可開始對頁面進行操作
 
