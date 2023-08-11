@@ -11,7 +11,7 @@
 - static資料夾
 - templates資料夾
 
-### 填入openapi key 跟 serpapi key
+### 填入openapi key 跟 serpapi key和pinecone的api跟env跟indexname
 - 在config.py中以下填入你自己的openapi key和serpapi key
 ```python=
 OPEN_API_KEY = ""
