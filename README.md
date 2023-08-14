@@ -1,6 +1,5 @@
 # casual_analysis_on_langchain
 
-# casual-nanlysis
 ## 安裝步驟
 ### 下載
 - 確保資料夾"因果分析agent"已成功下載到自己電腦中
@@ -13,11 +12,29 @@
 - static資料夾
 - templates資料夾
 
-### 填入openapi key 跟 serpapi key
+## 事前準備
+### 申請自己的serp API key
+- 進入 https://serpapi.com/plan 註冊帳號
+- 登入後在 Your account即可看到 Your Private API Key
+### 向量資料庫申請
+- 前往以下連結(右上申請)
+https://www.pinecone.io/
+- 註冊帳號並且註冊api
+1. 註冊完之後可以到index(在pinecone官網等入後會看到)這個地方創建向量資料庫
+2. 點擊右上角create index
+3. 設定向量資料庫的name(後面輸入到config.py中)
+4. 點開後設定維度為1536
+5. 其他設定可以用預設就好
+6. 創建完後去API keys得到keys跟Environment
+
+### 填入openapi key 跟 serpapi key和pinecone的api keys跟Environment跟indexname
 - 在config.py中以下填入你自己的openapi key和serpapi key
 ```python=
 OPEN_API_KEY = ""
 serpapi = ""
+pinecone_api = ""
+pinecone_env = ""
+pinecone_index_name = ""
 ```
 
 
@@ -28,7 +45,7 @@ pip install -r requirements.txt
 ```
 ### 安裝畫圖套件
 ```python=
-npm install -g @mermaid-js/mermaid-cli` to install mmdc
+npm install -g @mermaid-js/mermaid-cli
 ```
 
 ### 打開終端機
