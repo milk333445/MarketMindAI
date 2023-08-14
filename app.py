@@ -54,8 +54,36 @@ def delete_images():
 def index():
     return render_template('index.html')
 
+
+#設定全局變量(事件時間)
+event_data = {'event': None}
+casualresult_data = {'casual_result': None}
+
+@app.route('/get_event', methods=['POST'])
+def get_event():
+    user_input = request.json['user_input_event']
+    user_input_company_name = request.json['user_input_company']
+    user_input_hint = request.json['user_input_hint']
+    print(user_input)
+    print(user_input_company_name)
+    print(user_input_hint)
+    try:
+        event = event_time_inquiry(user_input)
+    except Exception as e:
+        print(f"可能該事件無確切時間:", e)
+        event = [user_input, "無確切時間"]
+    print(event)
+    event_data['event'] = event
+    return jsonify({'eventname': event[0],
+                    'eventtime': event[1]})
+
+
 @app.route('/process', methods=['POST'])
 def process():
+    #獲得全局變量(事件時間)
+    global event_data
+    event = event_data['event']
+    print('event:', event)
     
     delete_images()
     user_input = request.json['user_input_event']
@@ -66,49 +94,36 @@ def process():
     print(user_input_hint)
     #processed_result = user_input + ' processed'
     #歷史事件
-    if user_input.strip() != '':
-        while True:
-            related_history_events = get_related_history_events(user_input)
-            if related_history_events is not None and any(related_history_events.values()):
-                print("取得歷史事件資料成功！")
-                break
-            else:
-                print("取得歷史事件資料失敗！ 正在重新取得...")
-        
-        try:
-            event = event_time_inquiry(user_input)
-        except Exception as e:
-            print(f"可能該事件無確切時間")
-            event = [user_input, "無確切時間"]
-            
-        #因果分析
-        processed_result , result, wiki_search_summary, cause_and_effect_input = CauseAnalysisWebAPI(user_input, related_history_events, event)
-        #切字
-        try:
-            background, cause, effect = cut_result(processed_result)
-        except Exception as e:
-            print(f"Error cutting result: {e}")
-            background, cause, effect = None, None, None
-        #觀點分析
-        if user_input_hint.strip() != '':
-            point_of_view_analysis_result = point_of_view_analysis(result, processed_result, event, user_input_hint)
+    
+    while True:
+        related_history_events = get_related_history_events(user_input)
+        if related_history_events is not None and any(related_history_events.values()):
+            print("取得歷史事件資料成功！")
+            break
         else:
-            point_of_view_analysis_result = None
-        #因果流程圖
-        try:
-            draw_diagram(f'事件名稱:{event[0]}\n {processed_result}')
-        except Exception as e:
-            print(f"Error drawing diagram: {e}")
-            draw_diagram(f'事件名稱:{event[0]}\n {processed_result}')
+            print("取得歷史事件資料失敗！ 正在重新取得...")
+    
+    
+        
+    #因果分析
+    processed_result , result, wiki_search_summary, cause_and_effect_input = CauseAnalysisWebAPI(user_input, related_history_events, event)
+    #切字
+    try:
+        background, cause, effect, pointer = cut_result(processed_result)
+    except Exception as e:
+        print(f"Error cutting result: {e}")
+        background, cause, effect, pointer = None, None, None, None
+    #觀點分析
+    if user_input_hint.strip() != '':
+        point_of_view_analysis_result = point_of_view_analysis(result, processed_result, event, user_input_hint)
     else:
-        processed_result = None
-        background, cause, effect = None, None, None
         point_of_view_analysis_result = None
-        result = None
-        wiki_search_summary = None
-        cause_and_effect_input = None
-        event = None
-        related_history_events = None
+    #因果流程圖
+    try:
+        draw_diagram(f'事件名稱:{event[0]}\n {processed_result}')
+    except Exception as e:
+        print(f"Error drawing diagram: {e}")
+        draw_diagram(f'事件名稱:{event[0]}\n {processed_result}')
     #投資建議
     if user_input_company_name.strip() != '':
         my_agent = get_my_agent(processed_result, event, user_input_company_name)
@@ -144,11 +159,36 @@ def process():
                     'background': background,
                     'cause': cause,
                     'effect': effect,
+                    'pointer': pointer,
                     'investment_result': investment_result,
                     'related_history_events': related_history_events,
                     'price_plus_casual_result': price_plus_casual_result,
                     'point_of_view_analysis':point_of_view_analysis_result,
                     'reference_data': reference_data})
+
+
+@app.route('/regenerate', methods=['POST'])
+def regenerate():
+    global event_data, casualresult_data
+    event = event_data['event']
+    processed_result = casualresult_data['casual_result']
+    print('event:', event)
+    print('processed_result:', processed_result)
+    user_input = request.json['user_input_event']
+    user_input_company_name = request.json['user_input_company']
+    user_input_hint = request.json['user_input_hint']
+    print(user_input)
+    print(user_input_company_name)
+    print(user_input_hint)
+    
+    try:
+        draw_diagram(f'事件名稱:{event[0]}\n {processed_result}')
+        confirm = '重新產生流程圖成功'
+    except Exception as e:
+        print(f"Error drawing diagram: {e}")
+        draw_diagram(f'事件名稱:{event[0]}\n {processed_result}') 
+    return jsonify({'confirm': confirm})
+
 
 if __name__ == '__main__':
     app.run()

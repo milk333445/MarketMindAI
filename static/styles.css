@@ -400,10 +400,10 @@ p:not([class]){
   }
 
   /*loading頁面*/
-  #loadingContainer.hidden {
+  #loadingContainer.hidden, #confirmationModal.hidden, #regenertationModal.hidden {
     display: none;
   }
-  #loadingContainer {
+  #loadingContainer, #confirmationModal, #regenertationModal {
     position: fixed;
     top: 0;
     bottom: 0;
@@ -445,3 +445,86 @@ p:not([class]){
   #user_input_hint{
     width: 73%;
   }
+
+
+    /*彈出式*/
+/* Modal styles */
+
+.modal-content {
+  background-color: #fefefe;
+  margin: auto;
+  padding: 1px;
+  border: 1px solid #888;
+  width: 80%;
+  max-width: 500px;
+  position: relative;
+  border-radius: 10px;
+  align-items: center;
+  justify-content: center;
+}
+
+.close {
+  position: absolute;
+  top: 0;
+  right: 0;
+  padding: 10px;
+  cursor: pointer;
+  display: none;
+}
+
+#modalText {
+  font-size: 16px;
+  margin-bottom: 10px;
+  margin: 10px;
+}
+
+#modalButtons {
+  text-align: right;
+  margin-top: 20px;
+  margin: 5px;
+}
+
+
+#confirmButton,
+#cancelButton,
+#send  {
+  padding: 6px 12px;
+  margin-left: 10px;
+  font-size: 14px;
+  cursor: pointer;
+  border-radius: 10px;
+  margin: 2px;
+}
+
+#confirmButton, #cancelButton, #send {
+  background-color: #000; 
+  color: white; /* White text color */
+  border: none;
+}
+#confirmButton:hover, #cancelButton:hover {
+  background-color: #E0E0E0; 
+  color: black;
+}
+
+.title {
+  text-align: center;
+  padding: 5px;
+  font-size: 17px;
+  background: #000;    		
+  border-top-left-radius: 10px;
+  border-top-right-radius: 10px;
+  color: white;
+  border: 1px #f2e6e6 solid;
+  box-shadow: 0px 2px 8px 1px rgb(0 0 0 / 15%);
+}
+
+#regenerate_form{
+  padding: 10px 1px 1px 5px;
+
+}
+
+#user_input_event_2{
+  background-color: #fff;
+  border: #000 1px solid;
+  color: #000;
+}

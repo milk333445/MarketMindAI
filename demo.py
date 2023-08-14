@@ -16,7 +16,7 @@ from sklearn.cluster import KMeans
 from kor import create_extraction_chain, Object, Text ,Number
 from langchain import PromptTemplate, OpenAI, LLMChain
 import os
-rom config import OPEN_API_KEY, serpapi, pinecone_api, pinecone_env, pinecone_index_name
+from config import OPEN_API_KEY, serpapi, pinecone_api, pinecone_env, pinecone_index_name
 import ast
 from langchain.agents import initialize_agent
 from langchain.tools import Tool
@@ -231,6 +231,8 @@ def history_event(doc):
     llm = ChatOpenAI(temperature=0.5, model_name="gpt-3.5-turbo")
     extraction_chain = create_extraction_chain(llm, keyword_schema)
     data = extraction_chain.run((doc))['data']
+    #data = data.split("\n")
+    #data = data[1]
     return data
 
 def get_related_history_events(query):
@@ -496,14 +498,12 @@ def CauseAnalysisWebAPI(input_query: str, history_events: dict, event):
     - 原因1: [描述第一個原因]
     - 原因2: [描述第二個原因]
     - 原因3: [描述第三個原因]
-
-    Future implications of the event(at least 3 future implications, more details is better):
     未來影響:
     - 未來影響1: [描述第一個有可能的未來影響]
     - 未來影響2: [描述第二個有可能的未來影響]
     - 未來影響3: [描述第三個有可能的未來影響]
-    - Inferring Future Impacts of Events from Past Historical Parallels :[]
-    - 我的觀點: [你的意見](The answer must be specific.)
+    我的觀點: 
+    - [你的意見和觀點](The answer must be specific.)
     The response must always use "Traditional Chinese"
     """
     prompt = PromptTemplate(template=prompt_template, input_variables=["input"])
@@ -1591,4 +1591,23 @@ def cut_result(result):
         cause, effect = remaining.split(effect_marker4, 1)
     else:
         cause, effect = None, None
-    return background, cause, effect
+    pointer_maker = "我的觀點:\n"
+    pointer_maker2 = "我的观点:\n"
+    pointer_maker3 = "我的观點：\n"
+    pointer_maker4 = "我的觀點：\n"
+    pointer_maker5 = "我的觀點:"
+    
+    if pointer_maker in effect:
+        effect, pointer = effect.split(pointer_maker, 1)
+    elif pointer_maker2 in effect:
+        effect, pointer = effect.split(pointer_maker2, 1)
+    elif pointer_maker3 in effect:
+        effect, pointer = effect.split(pointer_maker3, 1)
+    elif pointer_maker4 in effect:
+        effect, pointer = effect.split(pointer_maker4, 1)
+    elif pointer_maker5 in effect:
+        effect, pointer = effect.split(pointer_maker5, 1)
+    else:
+        pointer = None
+    
+    return background, cause, effect, pointer

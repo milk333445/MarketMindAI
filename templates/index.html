@@ -1,5 +1,7 @@
 
 
+
+
 <!DOCTYPE html>
 <html>
 <head>
@@ -17,19 +19,43 @@
 </head>
 
 <body>
+<div id="confirmationModal" class="hidden">
+  <div class="modal-content">
+      <div class="title">確認事件</div>
+      <p id="modalText">事件名稱：</p>
+      <div id="modalButtons">
+          <button id="confirmButton">繼續</button>
+          <button id="cancelButton">重新搜尋</button>
+      </div>
+  </div>
+</div>
+<div id="regenertationModal" class="hidden" >
+  <div class="modal-content">
+      <div class="title">重新搜尋</div>
+      <form id="regenerate_form">
+        <label>請重新輸入事件名稱</label>
+        <input type="text" placeholder="Enter an Event" id="user_input_event_2" required/>
+        <div id="modalButtons">
+          <button type="submit" id="send">送出</button>
+        </div>
+
+      </form>
+      
+  </div>
+</div>
 <!--彈出視窗-->
 <div style='position:fixed;width:100%;height:100%;background-color:rgb(0,0,0,0.65)' id='modal'>
     <div class='modal' id='modalw'>
         <img id='bgImg' />
     </div>
 </div>
-<div id="loadingContainer" class="hidden" >
+<div id="loadingContainer"  class="hidden">
   <div class="loading-content">
     <div class="loading-icon">
       <i class="fa-solid fa-wand-magic-sparkles fa-fade fa-xl" style="color: black; justify-content: flex-end"></i>
     </div>
     <div class="loading-text">
-      <p style="color: black; font-weight: bold;">因果分析製作中，請稍待10分鐘</p>
+      <p style="color: black; font-weight: bold;">因果分析製作中，請稍等...</p>
     </div>
   </div>
 </div>
@@ -70,6 +96,7 @@
   </div>
 </form>
 
+
   <hr>
   <div id="tab" style="margin-top:10%">
 	   <a id=li_casual class="w3-bar-item w3-button" href="javascript:go_casual(); ">
@@ -104,8 +131,24 @@
         <!-- 頁籤的內容區塊 -->
         <div id="div_casual"  class="casual_content" style="margin-left:3%;padding:1px 16px;min-height:800px; display: none;text-align: left;overflow: hidden; margin-bottom: 8%;">
         <div id="div_casual_answer">
-        
+          <h4 class="title-heading">因果關聯圖</h4>
+          <div id="graph">
+            <form id="generating-form" style="float: right;">
+              <button style="border: none;" type="submit" ><i class="fa-solid fa-rotate-right" style="color: #000000;"></i></button>
+            </form>
+            <img class="thum-img" src="../static/my_graph.svg" onclick="showBgImg(this)" style="width: 100%; cursor: zoom-in;"/>
+          </div>
+                      
         </div>  
+
+        <div id="pointer"> 
+          <div style="width:100%; float:left;">
+            <h4 class="title-heading">我的觀點</h4>
+            <div id="point" class="contain_css">
+                <p>觀點</p>
+            </div>
+          </div>   
+          </div>  
         
 
           
@@ -230,9 +273,6 @@
 		document.getElementById("container").style.float = "none";
 	}
 
-	/*$(window).on('load', function() {
-            $('#loading').hide();
-          });*/
 
 	function go_casual(){ 
             document.getElementById("intro").style.display="none";    
