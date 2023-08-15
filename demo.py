@@ -350,7 +350,7 @@ def event_time_inquiry(question):
     llm = ChatOpenAI(temperature=0, model_name="gpt-4")
     tools = load_tools(["serpapi", "llm-math"], llm=llm)
     agent = initialize_agent(tools, llm, agent=AgentType.ZERO_SHOT_REACT_DESCRIPTION, verbose=True, max_iterations=2)
-    query = f"可以告訴我{question}事件的開始時間嗎?"
+    query = f"可以告訴我{question}事件的開始時間(年-月-日)嗎?"
     raw_answer = agent.run(query)
     final_input = f'問題: {query}\n 回答:{raw_answer}'
     prompt_template = """
@@ -703,7 +703,7 @@ def plot_stock_event_analysis(ticker_symbol, event, extra_events=None):
     event_date = pd.to_datetime(event[1]).date()
     event_text = f'{event[0]}\n( {event_date} )'
     event_price = df[df['Date'] == event_date]['Close'].values[0]
-    plt.annotate(event_text, xy=(event_date, event_price), xytext=(event_date, event_price+(max(df['Close'])-min(df['Close'])) *0.6),
+    plt.annotate(event_text, xy=(event_date, event_price), xytext=(event_date, event_price+(max(df['Close'])-min(df['Close'])) *0.3),
                  arrowprops=dict(arrowstyle='-|>', color='red'), fontproperties=font_prop, fontsize=15, 
                  ha='center', va='top')
     
@@ -714,7 +714,7 @@ def plot_stock_event_analysis(ticker_symbol, event, extra_events=None):
             event_name = extra_events['類似事件名稱'][i]
             event_text = f'{event_name}\n( {event_date} )'
             event_price = df[df['Date'] == event_date]['Close'].values[0]
-            plt.annotate(event_text, xy=(event_date, event_price), xytext=(event_date, event_price+(max(df['Close'])-min(df['Close'])) *0.6),
+            plt.annotate(event_text, xy=(event_date, event_price), xytext=(event_date, event_price+(max(df['Close'])-min(df['Close'])) *0.3),
                          arrowprops=dict(arrowstyle='-|>', color='red'), fontproperties=font_prop,
                          fontsize=12, ha='center', va='top')
     plt.xlabel('日期', fontsize=15)
@@ -768,7 +768,7 @@ def plot_RSI_event_analysis(ticker_symbol, event):
         event_date = pd.to_datetime(event[1]).date()
         event_text = f'{event[0]}\n( {event_date} )'
         event_price = df[df['Date'] == closest_date]['RSI'].values[0]
-        plt.annotate(event_text, xy=(closest_date, event_price), xytext=(closest_date, event_price+(max(df['Close'])-min(df['Close'])) *0.6),
+        plt.annotate(event_text, xy=(closest_date, event_price), xytext=(closest_date, event_price+15),
                     arrowprops=dict(arrowstyle='-|>', color='red'), fontproperties=font_prop, fontsize=15, 
                     ha='center', va='top')
 
@@ -822,6 +822,8 @@ def plot_RSI_event_analysis(ticker_symbol, event):
         save_path = os.path.join(current_dir, 'static', 'RSI')
         plt.savefig(save_path)
         
+        
+        
     
 #MACD插入事件
 def plot_MACD_event_analysis(ticker_symbol, event):
@@ -856,7 +858,7 @@ def plot_MACD_event_analysis(ticker_symbol, event):
         event_date = pd.to_datetime(event[1]).date()
         event_text = f'{event[0]}\n( {event_date} )'
         event_price = df[df['Date'] == closest_date]['MACD'].values[0]
-        plt.annotate(event_text, xy=(closest_date, event_price), xytext=(closest_date, event_price+(max(df['Close'])-min(df['Close'])) *0.6),
+        plt.annotate(event_text, xy=(closest_date, event_price), xytext=(closest_date, event_price+(max(df['MACD'])-min(df['MACD'])) *0.3),
                     arrowprops=dict(arrowstyle='-|>', color='red'), fontproperties=font_prop, fontsize=15, 
                     ha='center', va='top')
     
@@ -941,7 +943,7 @@ def plot_bollinger_event_analysis(ticker_symbol, event):
         event_date = pd.to_datetime(event[1]).date()
         event_text = f'{event[0]}\n( {event_date} )'
         event_price = df[df['Date'] == closest_date]['Close'].values[0]
-        plt.annotate(event_text, xy=(closest_date, event_price), xytext=(closest_date, event_price+(max(df['Close'])-min(df['Close'])) *0.6),
+        plt.annotate(event_text, xy=(closest_date, event_price), xytext=(closest_date, event_price+(max(df['Close'])-min(df['Close'])) *0.3),
                     arrowprops=dict(arrowstyle='-|>', color='red'), fontproperties=font_prop, fontsize=15, 
                     ha='center', va='top')
     
