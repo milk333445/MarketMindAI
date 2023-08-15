@@ -147,7 +147,21 @@ def process():
     #投資建議
     if user_input_company_name.strip() != '':
         my_agent = get_my_agent(processed_result, event, user_input_company_name)
-        invest_recommendation = my_agent.run(f'請給我{user_input_company_name}(股票代碼或公司名稱)的投資建議')
+        max_retries = 3
+        retries = 0
+        while retries < max_retries:
+            try:   
+                invest_recommendation = my_agent.run(f'請給我{user_input_company_name}(股票代碼或公司名稱)的投資建議')
+                break
+            except Exception as e:
+                print("出現錯誤")
+                retries += 1
+                if retries < max_retries:
+                    print(f"嘗試重新執行... (第{retries}次)...")
+                else:
+                    print(f"已達到最大重試次數，無法繼續嘗試")
+                    invest_recommendation = None
+
         file_path = os.path.join(os.getcwd(),'investment.txt')
         investment_result = read_txt_file(file_path)  
         with open(file_path, 'w', encoding='utf-8') as file:
@@ -163,8 +177,12 @@ def process():
             file.write('')
         file_path_reference_data = os.path.join(os.getcwd(),'reference.txt')
         reference_data = read_txt_file(file_path_reference_data)
-        reference_data = json.loads(reference_data)
-        reference_data = json.dumps(reference_data)
+        try:
+            reference_data = json.loads(reference_data)
+            reference_data = json.dumps(reference_data)
+        except Exception as e:
+            print(f"Error reading reference data: {e}")
+            reference_data = None
         with open (file_path_reference_data, 'w', encoding='utf-8') as file:
             file.write('')
     else:
