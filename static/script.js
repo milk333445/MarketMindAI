@@ -5,8 +5,8 @@ var config = {
     'maxDescChars': 100,
   };
   
-  KGSearchWidget(key="AIzaSyC-do9AgWGWbNl2OrEfpsiYu8PSNjJxkY0", document.getElementById("user_input_event"), config);
-  KGSearchWidget(key="AIzaSyC-do9AgWGWbNl2OrEfpsiYu8PSNjJxkY0", document.getElementById("user_input_company"), config);
+  KGSearchWidget(key="", document.getElementById("user_input_event"), config);
+  KGSearchWidget(key="", document.getElementById("user_input_company"), config);
 
 var modal = document.getElementById('modal');
 var bgImg = document.getElementById('bgImg');
@@ -48,7 +48,8 @@ $(document).ready(function() {
         var requestData = {
             'user_input_event': userInput,
             'user_input_company': company_name,
-            'user_input_hint': user_input_hint
+            'user_input_hint': user_input_hint,
+            'user_input_history_keyword': '這是測試',
         }; 
 
 
@@ -67,7 +68,7 @@ $(document).ready(function() {
             confirmButton.onclick = function() {
                 modal.style.display = 'none';
                 setLoading(true);
-                processSecondRequest();
+                processHistoryRequest();
             };
             
             cancelButton.onclick = function() {
@@ -87,7 +88,75 @@ $(document).ready(function() {
 
                 });
             };
+            
         }
+        //處理歷史觀點搜尋
+        function showHistoryModal(history_keyword) {
+            var his_modal = document.getElementById('his_confirmationModal');
+            var his_confirmButton = document.getElementById('his_confirmButton');
+            var his_adjust = document.getElementById('his_adjust');
+            var his_adjustInput = document.querySelector('#his_adjust input');
+            var historyKeywordContainer = document.getElementById('historyKeywordContainer'); 
+
+            //設定彈出框
+            var modalText = his_modal.querySelector('.modal-content p');
+            modalText.textContent = '請確認是否要以此關鍵字去搜尋歷史事件';
+            his_modal.style.display = 'flex';
+            historyKeywordContainer.innerHTML = '歷史事件關鍵字：<span id="historyKeyword">' + history_keyword + '</span> ' +
+                                      '<button id="his_adjustment" onclick="adjustment()" style="border: none; background: none; font-size: 10px; text-decoration: underline;">修改</button><br>';
+
+            var his_adjustButton = document.getElementById('his_adjustment');
+
+            his_confirmButton.onclick = function() {
+
+                var newKeyword = his_adjustInput.value.trim();
+                console.log('newKeyword:', newKeyword);
+                if (newKeyword !== '')
+                {
+                    requestData.user_input_history_keyword = newKeyword;
+                    console.log('requestData.user_input_history_keyword:', requestData.user_input_history_keyword);
+                }
+                else
+                {
+                    requestData.user_input_history_keyword = history_keyword;
+                }
+                his_modal.style.display = 'none';
+                processSecondRequest();
+            };
+            
+        }
+
+
+
+
+        //處理歷史觀點搜尋
+        function processHistoryRequest()
+        {
+            setLoading(true)
+            $.ajax({
+
+                url: '/get_history_keyword',
+                type: 'POST',
+                data: JSON.stringify(requestData),
+                contentType: 'application/json',
+                success: function(response) {
+                    console.log('Response:', response);
+                    console.log('History Keyword:', response.history_keyword);
+                    var history_keyword = response.history_keyword;
+                    //彈出視窗
+                    setLoading(false);
+                    showHistoryModal(history_keyword);
+            
+
+                
+
+
+                    
+                }
+
+            });
+        }
+
 
 
         //第一個請求
@@ -109,27 +178,59 @@ $(document).ready(function() {
 
                     //彈出視窗
                     setLoading(false);
-                    showModal(eventName, eventTime);
-                    
-                    
-                    /*
-                    var userConfirmed = window.confirm('事件名稱: ' + eventName + '\n時間: ' + eventTime + '\n是否繼續?');
-                    
-                    if (userConfirmed){
-                        processSecondRequest();
-                    }
-                    else{
-                        var newUserInput = prompt('請重新輸入事件名稱');
-                        requestData.user_input_event = newUserInput;
-                        processFirstRequest();
-
-                    }
-                    */
-                  
+                    showModal(eventName, eventTime); 
                     }});
         }
 
+        function bindFormSubmitEvent() {
+            $(document).on('submit', '#generating-form', function(e) {
+                e.preventDefault();
+                var userInput = $('#user_input_event').val();
+                var company_name = $('#user_input_company').val();
+                var user_input_hint = $('#user_input_hint').val();
+        
+                if (userInput.trim() === '') {
+                    alert('請輸入事件名稱');
+                    return;
+                }
+                setLoading(true);
+                console.log('Generating');
+                console.log('User Input:', userInput);
+                console.log('Company Name:', company_name);
+                console.log('User Input Hint:', user_input_hint);
+                var requestData = {
+                    'user_input_event': userInput,
+                    'user_input_company': company_name,
+                    'user_input_hint': user_input_hint
+                }; 
+        
+                // 請求後端重新產生圖片
+                $('#graph').html('Loading...');
+                $.ajax({
+                    url: '/regenerate',
+                    type: 'POST',
+                    data: JSON.stringify(requestData),
+                    contentType: 'application/json',
+                    success: function(response) {
+                        console.log('Response:', response);
+                        console.log('confirm:', response.confirm);
+                        var randomParam = Date.now(); // 获取当前时间戳作为随机参数
+                        var imgTag = '<img class="thum-img" src="../static/my_graph.svg?' + randomParam + '" onclick="showBgImg(this)" style="width: 100%; cursor: zoom-in;"/>';
+
+                        //var imgTag = '<img class="thum-img" src="../static/my_graph.svg" onclick="showBgImg(this)" style="width: 100%; cursor: zoom-in;"/>';
+                        setTimeout(function() {
+                            // 替换为新图片
+                            $('#graph').html(imgTag);
+                        }, 1000);
+                        //$('#graph').html(imgTag);
+                        setLoading(false);
+                    }
+                });
+            });
+        }
+
         function processSecondRequest(){
+            setLoading(true);
             $.ajax({
                 url: '/process',
                 type: 'POST',
@@ -148,6 +249,8 @@ $(document).ready(function() {
                     {
                         var processedResult = response.result;
                         console.log('processedResult:', processedResult);
+                        var news = response.news;
+                        var newswithbreaks = news.replace(/\n/g,'<br>');
                         var processedResultWithLineBreaks = processedResult.replace(/\n\n/g, '<br><br>').replace('/\n/g', '<br><br>').replace(/- /g, '<br>');
                         var imgTag = '<img class="thum-img" src="../static/my_graph.svg" onclick="showBgImg(this)" style="width: 100%; cursor: zoom-in;"/>';
                         var html = `
@@ -161,6 +264,7 @@ $(document).ready(function() {
                         </div>
                         `;
                         $('#div_casual_answer').html(html);
+                        $('#news').html(newswithbreaks);
                     }
                     else
                     {
@@ -178,7 +282,8 @@ $(document).ready(function() {
                         var effectWithLineBreaks = effectWithLineBreaks.replace(/- /g, '');
                         console.log('effect:', effect);
                         var pointer = response.pointer;
-                        
+                        var news = response.news;
+                        var newswithbreaks = news.replace(/\n/g,'<br>');
 
 
 
@@ -219,6 +324,9 @@ $(document).ready(function() {
                         `;
                         $('#div_casual_answer').html(html);
                         $('#point').html(pointer);
+                        $('#news').html(newswithbreaks);
+
+                        bindFormSubmitEvent()
                     }
     
     
@@ -453,11 +561,20 @@ $(document).ready(function() {
     
     );
 
+
+    /*
     $('#generating-form').submit(function(e) {
         e.preventDefault();
+        
         var userInput = $('#user_input_event').val();
         var company_name = $('#user_input_company').val();
         var user_input_hint = $('#user_input_hint').val();
+        var requestData = {
+            'user_input_event': userInput,
+            'user_input_company': company_name,
+            'user_input_hint': user_input_hint
+        };
+        
 
         if (userInput.trim() === '')
         {
@@ -469,13 +586,8 @@ $(document).ready(function() {
         console.log('User Input:', userInput);
         console.log('Company Name:', company_name);
         console.log('User Input Hint:', user_input_hint);
-        var requestData = {
-            'user_input_event': userInput,
-            'user_input_company': company_name,
-            'user_input_hint': user_input_hint
-        }; 
+        
 
-        //請求後端重新產生圖片
         $.ajax({
             url: '/regenerate',
             type: 'POST',
@@ -493,8 +605,11 @@ $(document).ready(function() {
 
 
 
-        // 在這裡執行您的操作
-    });
+
+    }
+  
+    );
+    */
 });
 
 

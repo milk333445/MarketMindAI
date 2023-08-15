@@ -1,6 +1,6 @@
 from flask import Flask, request, jsonify
 from flask import Flask, request, render_template
-from demo import CauseAnalysisWebAPI, draw_diagram, get_event_and_related_event, get_my_agent, point_of_view_analysis, cut_result, get_related_history_events, event_time_inquiry
+from demo import CauseAnalysisWebAPI, draw_diagram, get_event_and_related_event, get_my_agent, point_of_view_analysis, cut_result, get_related_history_events, event_time_inquiry, history_event
 #api和格式整理
 from langchain import PromptTemplate
 from langchain.chains.summarize import load_summarize_chain
@@ -58,15 +58,19 @@ def index():
 #設定全局變量(事件時間)
 event_data = {'event': None}
 casualresult_data = {'casual_result': None}
+history_keyword_data = {'history_keyword': None}
 
 @app.route('/get_event', methods=['POST'])
 def get_event():
     user_input = request.json['user_input_event']
     user_input_company_name = request.json['user_input_company']
     user_input_hint = request.json['user_input_hint']
+    user_input_history_keyword = request.json['user_input_history_keyword']
+    
     print(user_input)
     print(user_input_company_name)
     print(user_input_hint)
+    print(user_input_history_keyword)
     try:
         event = event_time_inquiry(user_input)
     except Exception as e:
@@ -78,10 +82,24 @@ def get_event():
                     'eventtime': event[1]})
 
 
+@app.route('/get_history_keyword', methods=['POST'])
+def get_history_keyword():
+    user_input = request.json['user_input_event']
+    user_input_company_name = request.json['user_input_company']
+    user_input_hint = request.json['user_input_hint']
+    user_input_history_keyword = request.json['user_input_history_keyword']
+
+    
+    key_word = history_event(user_input)
+    key_word = key_word['keyword_extract'][0]['keyword']
+    return jsonify({'history_keyword': key_word})
+    
+ 
+
 @app.route('/process', methods=['POST'])
 def process():
     #獲得全局變量(事件時間)
-    global event_data
+    global event_data, casualresult_data
     event = event_data['event']
     print('event:', event)
     
@@ -89,14 +107,15 @@ def process():
     user_input = request.json['user_input_event']
     user_input_company_name = request.json['user_input_company']
     user_input_hint = request.json['user_input_hint']
+    user_input_history_keyword = request.json['user_input_history_keyword']
     print(user_input)
     print(user_input_company_name)
     print(user_input_hint)
-    #processed_result = user_input + ' processed'
     #歷史事件
     
     while True:
-        related_history_events = get_related_history_events(user_input)
+        key_word = user_input_history_keyword
+        related_history_events = get_related_history_events(key_word)
         if related_history_events is not None and any(related_history_events.values()):
             print("取得歷史事件資料成功！")
             break
@@ -107,6 +126,7 @@ def process():
         
     #因果分析
     processed_result , result, wiki_search_summary, cause_and_effect_input = CauseAnalysisWebAPI(user_input, related_history_events, event)
+    casualresult_data['casual_result'] = processed_result
     #切字
     try:
         background, cause, effect, pointer = cut_result(processed_result)
@@ -127,7 +147,7 @@ def process():
     #投資建議
     if user_input_company_name.strip() != '':
         my_agent = get_my_agent(processed_result, event, user_input_company_name)
-        invest_recommendation = my_agent.run(f'請給我{user_input_company_name}的投資建議')
+        invest_recommendation = my_agent.run(f'請給我{user_input_company_name}(股票代碼或公司名稱)的投資建議')
         file_path = os.path.join(os.getcwd(),'investment.txt')
         investment_result = read_txt_file(file_path)  
         with open(file_path, 'w', encoding='utf-8') as file:
@@ -164,7 +184,8 @@ def process():
                     'related_history_events': related_history_events,
                     'price_plus_casual_result': price_plus_casual_result,
                     'point_of_view_analysis':point_of_view_analysis_result,
-                    'reference_data': reference_data})
+                    'reference_data': reference_data,
+                    'news' : result})
 
 
 @app.route('/regenerate', methods=['POST'])
