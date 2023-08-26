@@ -8,7 +8,6 @@
 - app.py
 - config.py
 - demo.py
-- images資料夾
 - static資料夾
 - templates資料夾
 
