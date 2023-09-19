@@ -1,33 +1,28 @@
 #api和格式整理
-from langchain import OpenAI
-from langchain import PromptTemplate
+
 from langchain.chains.summarize import load_summarize_chain
 from langchain.text_splitter import RecursiveCharacterTextSplitter
 from serpapi import GoogleSearch
-from langchain.document_loaders import WebBaseLoader
-import re
+from langchain.document_loaders import WebBaseLoader #serp api爬下來的內容只有網址，使用這個功能解析網址內的內容
+import re #正則表達式
 from langchain.vectorstores import Pinecone
-from langchain.embeddings.openai import OpenAIEmbeddings
+from langchain.embeddings.openai import OpenAIEmbeddings #將資料轉成向量
 import pinecone
-from langchain.schema import Document
-from langchain.chat_models import ChatOpenAI
+from langchain.chat_models import ChatOpenAI 
 import numpy as np
 from sklearn.cluster import KMeans
-from kor import create_extraction_chain, Object, Text ,Number
-from langchain import PromptTemplate, OpenAI, LLMChain
-import os
+from kor import create_extraction_chain, Object, Text  #字詞擷取結構化抽取工具
+from langchain import PromptTemplate, LLMChain
+import os #連接其他資料夾
 from config import OPEN_API_KEY, serpapi, pinecone_api, pinecone_env, pinecone_index_name
-import ast
-from langchain.agents import initialize_agent
-from langchain.tools import Tool
+import ast #把string轉成list
+from langchain.agents import initialize_agent 
 from langchain.agents import AgentType
 from langchain.tools import WikipediaQueryRun
 from langchain.utilities import WikipediaAPIWrapper
 from langchain.agents import load_tools
 import subprocess
 from pathlib import Path
-import re
-import requests
 import json
 import yfinance as yf
 from yahooquery import Ticker
@@ -38,10 +33,9 @@ from typing import Type
 from pydantic import BaseModel, Field
 from langchain.tools import BaseTool
 from typing import Any
-import math, os, random, csv, getpass
+import math, random, csv, getpass
 from math import gamma
-from tabnanny import verbose
-import numpy as np
+from tabnanny import verbose #可以把結果在終端顯示出來的顯示工具
 # log and save
 import json, logging, pickle, sys, shutil, copy
 from argparse import ArgumentParser, Namespace
@@ -62,7 +56,6 @@ from langchain.document_loaders import Docx2txtLoader
 import nltk
 nltk.download('punkt')
 from langchain.text_splitter import CharacterTextSplitter
-import faiss
 from sentence_transformers import SentenceTransformer
 from langchain.chains import RetrievalQAWithSourcesChain
 from langchain.embeddings import HuggingFaceEmbeddings
@@ -107,11 +100,11 @@ def extract_text(document):
 
 def remove_duplicate_document(documents):
         unique_documents = []
-        for doc in documents:
+        for doc in documents: #doc為從向量資料庫中抽取出來的文件資料集
             if doc not in unique_documents:
                 unique_documents.append(doc)
         return unique_documents
-def remove_unnessary_word(split_doce):
+def remove_unnessary_word(split_doce): #處理爬文下來的東西，將斜線跟其他怪符號刪掉
         for i in range(len(split_doce)):
             text = split_doce[i].page_content
             text = re.sub(r"[^\w\s\n]+", "", text)
@@ -119,7 +112,7 @@ def remove_unnessary_word(split_doce):
             text = text.replace('\t', '')
             split_doce[i].page_content = text
         return split_doce
-def remove_short_documents(split_doce, min_word_count):
+def remove_short_documents(split_doce, min_word_count): #刪掉太短的參考文本
         filtered_documents = []
         for i in range(len(split_doce)):
             if len(split_doce[i].page_content) > min_word_count:
@@ -180,7 +173,8 @@ def extract_info(data_str):
 
 
 #抽取字
-def history_event(doc):
+#進到chain中去抽取字詞
+def history_event(doc): 
     keyword_schema = Object(
     id="keyword_extract",
     description="keyword extraction",
@@ -233,7 +227,7 @@ def history_event(doc):
     data = extraction_chain.run((doc))['data']
     return data
 
-def get_related_history_events(key_word):
+def get_related_history_events(key_word): #到LLM提問抓出相似歷史事件
     print(key_word)
     llm = ChatOpenAI(temperature  =0.5, model_name = "gpt-3.5-turbo")
     prompt_template = """
@@ -435,6 +429,11 @@ def CauseAnalysisWebAPI(input_query: str, history_events: dict, event):
     print(f"related top {num_news} source: {source}")
     print(f"related top {num_news} date: {date}")
     
+    ## 新聞存成字典回傳
+    news_data = {
+                'title': title_news,
+                'link': link_news,
+            }
     documents = []
     for link in link_news:
         try:
@@ -507,7 +506,7 @@ def CauseAnalysisWebAPI(input_query: str, history_events: dict, event):
     chain = LLMChain(llm=llm, prompt=prompt)
     final_cause_and_effect_output = chain.run(cause_and_effect_input)
     
-    return final_cause_and_effect_output, result, wiki_search_summary, cause_and_effect_input
+    return final_cause_and_effect_output, result, wiki_search_summary, cause_and_effect_input, news_data
 
 #前置函數
 def parse_code(text: str, lang: str = "") -> str:

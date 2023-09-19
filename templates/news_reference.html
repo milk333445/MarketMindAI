@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+ <meta charset="UTF-8">
+ <meta name="viewport" content="width=device-width, initial-scale=1.0">
+ <title>近期新聞參考連結</title>
+</head>
+<body>
+ <div>
+  <div style="width:100%; float:left;">
+    <h1 class="title-heading">參考連結</h1>
+    <div id="casual_reference" >
+        <script>
+            var urlParams = new URLSearchParams(window.location.search);
+            var referenceData = urlParams.get('data');
+        
+            
+
+            if (referenceData){
+                var referenceObj = JSON.parse(referenceData);
+                var referenceDiv = document.getElementById('casual_reference');
+                for (var i = 0; i < referenceObj['title'].length; i++) {
+                    var title = referenceObj['title'][i];
+                    var link = referenceObj['link'][i];
+                
+                    var paragraph = document.createElement('p');
+                    var anchor = document.createElement('a');
+                
+                    anchor.href = link;
+                    anchor.textContent = title;
+                    paragraph.appendChild(anchor);
+                    referenceDiv.appendChild(paragraph);
+                }
+            }
+            else {
+                $('#casual_reference').html('請至新分頁查看');
+            }
+        </script>
+   
+    </div>
+  </div>
+   </div>
+
+</body>
+</html>

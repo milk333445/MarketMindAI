@@ -532,3 +532,13 @@ p:not([class]){
   border: #000 1px solid;
   color: #000;
 }
+
+#reference{
+  margin-top:1%; 
+  text-align: left;
+}
+
+#ref_button{
+  border: none;
+  float:right ;
+}

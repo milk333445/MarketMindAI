@@ -541,6 +541,14 @@ $(document).ready(function() {
                     {
                         $('#reference').html('');
                     }
+                    var newsreference = response.news_reference;
+                    var newsreferenceObj = JSON.parse(newsreference);
+                    var ref_button = document.getElementById('ref_button');
+                    ref_button.onclick = function(){
+                        var newsreferenceData = JSON.stringify(newsreferenceObj);
+                        var url = "news_reference.html?data=" + encodeURIComponent(newsreferenceData);
+                        window.open(url, '_blank') ;
+                    }
                     setLoading(false);
       
          
@@ -612,4 +620,8 @@ $(document).ready(function() {
     */
 });
 
+var ref_button = document.getElementById('ref_button');
+ref_button.onclick = function(){
+    window.open("news_reference.html", '_blank') ;
+}
 

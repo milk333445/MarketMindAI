@@ -125,7 +125,8 @@ def process():
     
         
     #因果分析
-    processed_result , result, wiki_search_summary, cause_and_effect_input = CauseAnalysisWebAPI(user_input, related_history_events, event)
+    processed_result , result, wiki_search_summary, cause_and_effect_input, news_reference = CauseAnalysisWebAPI(user_input, related_history_events, event)
+    news_reference = json.dumps(news_reference)
     casualresult_data['casual_result'] = processed_result
     #切字
     try:
@@ -203,7 +204,8 @@ def process():
                     'price_plus_casual_result': price_plus_casual_result,
                     'point_of_view_analysis':point_of_view_analysis_result,
                     'reference_data': reference_data,
-                    'news' : result})
+                    'news' : result,
+                    'news_reference': news_reference})
 
 
 @app.route('/regenerate', methods=['POST'])
@@ -227,6 +229,10 @@ def regenerate():
         print(f"Error drawing diagram: {e}")
         draw_diagram(f'事件名稱:{event[0]}\n {processed_result}') 
     return jsonify({'confirm': confirm})
+
+@app.route('/news_reference.html')
+def news_reference():
+    return render_template('news_reference.html')
 
 
 if __name__ == '__main__':
