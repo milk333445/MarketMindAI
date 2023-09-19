@@ -2,14 +2,14 @@
 ## Introduction
 The Financial Market Analysis System is a cutting-edge tool designed to streamline the process of collecting and analyzing financial data. Developed during an internship at Fubon, this system serves as a powerful interface that seamlessly connects with stock databases, news sources, and Wikipedia to gather comprehensive data for analysis.
 
-Key Features:
+### Key Features:
 
-Data Integration: The system aggregates data from various sources, providing a centralized repository for financial information.
-Historical Event Tracking: It meticulously records historical events, allowing users to trace their impact on financial markets.
-Causal Analysis: Employing advanced analytical techniques, the system identifies causal relationships within financial data.
-Image-to-Text: Leveraging image recognition capabilities, it converts visual data into text for further analysis.
-Financial Report Analysis: The system automates the analysis of financial reports, simplifying the evaluation of company performance.
-Data Visualization: Through dynamic visualizations, users gain a deeper understanding of market trends and patterns.
+- Data Integration: The system aggregates data from various sources, providing a centralized repository for financial information.
+- Historical Event Tracking: It meticulously records historical events, allowing users to trace their impact on financial markets.
+- Causal Analysis: Employing advanced analytical techniques, the system identifies causal relationships within financial data.
+- Image-to-Text: Leveraging image recognition capabilities, it converts visual data into text for further analysis.
+- Financial Report Analysis: The system automates the analysis of financial reports, simplifying the evaluation of company performance.
+- Data Visualization: Through visualizations, users gain a deeper understanding of market trends and patterns.
 ## Installation Steps
 ### Download
 - Ensure that the folder "Causal Analysis Agent" has been successfully downloaded to your computer.
