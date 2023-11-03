@@ -77,7 +77,7 @@ python app.py
 #### Demo
 ![範例圖片](images/圖片1.jpg)
 ![範例圖片](images/圖片2.jpg)
-![範例圖片](images/圖片3.jpg)
+![範例圖片](images/圖片3.png)
 ![範例圖片](images/圖片4.jpg)
 ![範例圖片](images/圖片5.jpg)
 ![範例圖片](images/圖片6.jpg)
