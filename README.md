@@ -1,4 +1,4 @@
-# casual_analysis_on_langchain
+# MarketMindAI
 ## Introduction
 ![範例圖片](images/圖片1.jpg)
 The Financial Market Analysis System is a cutting-edge tool designed to streamline the process of collecting and analyzing financial data. Developed during an internship at Fubon, this system serves as a powerful interface that seamlessly connects with stock databases, news sources, and Wikipedia to gather comprehensive data for analysis.
