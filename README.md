@@ -8,7 +8,7 @@ The Financial Market Analysis System is a cutting-edge tool designed to streamli
 - Data Integration: The system aggregates data from various sources, providing a centralized repository for financial information.
 - Historical Event Tracking: It meticulously records historical events, allowing users to trace their impact on financial markets.
 - Causal Analysis: Employing advanced analytical techniques, the system identifies causal relationships within financial data.
-- Image-to-Text: Leveraging image recognition capabilities, it converts visual data into text for further analysis.
+- Text-to-image: visualizarion text capabilities, it converts text into image for further analysis.
 - Financial Report Analysis: The system automates the analysis of financial reports, simplifying the evaluation of company performance.
 - Data Visualization: Through visualizations, users gain a deeper understanding of market trends and patterns.
 ## Installation Steps
